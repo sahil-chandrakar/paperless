@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import theme from "@/theme/theme";
+
+// ADD: Import our new Provider
+import { ColorModeContextProvider } from "@/context/ThemeContext";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,12 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        {/* solve Flash of Unstyled Content problem */}
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            {/* CssBaseline kicksstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            {children}
-          </ThemeProvider>
+            {/* The Provider now handles the Theme and CssBaseline inside it */}
+            <ColorModeContextProvider>
+              <Navbar /> 
+              <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+                {children}
+              </main>
+            </ColorModeContextProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
