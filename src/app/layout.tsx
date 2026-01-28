@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+// 1. IMPORT GOOGLE FONTS
+import { Playfair_Display, Source_Sans_3 } from "next/font/google";
 
-// ADD: Import our new Provider
 import { ColorModeContextProvider } from "@/context/ThemeContext";
 import Navbar from "@/components/Navbar";
+import Box from '@mui/material/Box';
 import "./globals.css";
+
+// 2. CONFIGURE FONTS
+const playfair = Playfair_Display({ 
+  subsets: ["latin"], 
+  variable: '--font-serif', // Use this variable in CSS/MUI
+  display: 'swap',
+});
+
+const sourceSans = Source_Sans_3({ 
+  subsets: ["latin"], 
+  variable: '--font-sans', 
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: "Paperless",
@@ -18,15 +33,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        {/* solve Flash of Unstyled Content problem */}
+      {/* 3. APPLY FONT VARIABLES TO BODY */}
+      <body className={`${playfair.variable} ${sourceSans.variable}`}>
         <AppRouterCacheProvider>
-            {/* The Provider now handles the Theme and CssBaseline inside it */}
             <ColorModeContextProvider>
-              <Navbar /> 
-              <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-                {children}
-              </main>
+              <Box sx={{ 
+                minHeight: '100vh', 
+                backgroundColor: 'background.default',
+                color: 'text.primary',
+                fontFamily: 'var(--font-sans)', // Set global default font
+              }}>
+                <Navbar />
+                
+                {/* 4. CONTENT WRAPPER */}
+                {/* We removed the hardcoded '1200px' limit here so pages can decide their own width */}
+                <Box component="main">
+                  {children}
+                </Box>
+              </Box>
             </ColorModeContextProvider>
         </AppRouterCacheProvider>
       </body>

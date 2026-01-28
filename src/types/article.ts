@@ -1,13 +1,15 @@
+export interface Author {
+  username: string;
+  avatar_url?: string;
+}
+
 export interface Article {
-  id: string;
+  id: number;
   title: string;
-  description: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  publishedAt: string; // ISO Date string
-  readTime: string;    // e.g., "5 min read"
-  tags: string[];
-  thumbnailUrl?: string; // Optional (some articles might not have images)
+  slug: string;
+  content: string; // The full HTML/Text body
+  cover_image?: string;
+  created_at: string;
+  author: Author; // Nested object
+  tags?: string[]; // Optional for now
 }
